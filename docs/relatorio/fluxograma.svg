@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="760" viewBox="0 0 1100 760" role="img" aria-labelledby="title desc">
+  <title id="title">Fluxograma das fases do projeto</title>
+  <desc id="desc">Fundamentação, implementação, piloto, coleta, análise e discussão. Se o piloto detectar falhas, retorna à implementação.</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#24596c"/></marker></defs>
+  <rect width="1100" height="760" fill="#ffffff"/>
+  <g fill="#eff6f8" stroke="#24596c" stroke-width="2">
+    <rect x="230" y="30" width="640" height="80" rx="8"/>
+    <rect x="230" y="150" width="640" height="80" rx="8"/>
+    <rect x="230" y="270" width="640" height="80" rx="8"/>
+    <rect x="230" y="390" width="640" height="80" rx="8"/>
+    <rect x="230" y="510" width="640" height="80" rx="8"/>
+    <rect x="230" y="630" width="640" height="80" rx="8"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="24" fill="#16313c" text-anchor="middle">
+    <text x="550" y="78">Fundamentação e registro de hipóteses</text>
+    <text x="550" y="198">Implementação: C, monitores e gerador</text>
+    <text x="550" y="318">Piloto: validar relógios, logs e oráculo</text>
+    <text x="550" y="438">Coleta controlada: Partes A, B e C</text>
+    <text x="550" y="558">Análise estatística e teste das hipóteses</text>
+    <text x="550" y="678">Discussão, relatório e apresentação</text>
+  </g>
+  <g stroke="#24596c" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M550 110 V143"/><path d="M550 230 V263"/>
+    <path d="M550 350 V383"/><path d="M550 470 V503"/><path d="M550 590 V623"/>
+    <path d="M230 310 H100 V190 H222"/>
+  </g>
+  <text x="88" y="260" font-family="Arial, sans-serif" font-size="18" fill="#24596c" text-anchor="middle" transform="rotate(-90 88 260)">Corrigir falhas</text>
+</svg>
