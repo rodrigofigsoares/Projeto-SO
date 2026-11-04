@@ -1,0 +1,4 @@
+ts_detect_ns,event_type,path
+18984589192665,CREATE,/tmp/teste/lento.txt
+18985093910296,MODIFY,/tmp/teste/lento.txt
+18985597336859,DELETE,/tmp/teste/lento.txt
