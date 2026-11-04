@@ -60,6 +60,30 @@ Um gerador de carga cria, altera e apaga arquivos em taxas de 10, 100, 1.000 e 1
 
 Visão de QA: o gerador é um teste de carga com oráculo, e a perda de eventos (estouro da fila do inotify, `IN_Q_OVERFLOW`) é um bug clássico de sistemas.
 
+#### Como utilizar os monitores
+
+```bash
+# 1. Acessar o diretório dos monitores
+cd henri_checkpoint_1
+
+# 2. Criar e ativar o ambiente virtual
+python3 -m venv venv
+source venv/bin/activate
+
+# 3. Instalar as dependências
+pip install -r requirements.txt
+
+# 4. Executar demonstração automatizada (executa cenários e exibe tabela comparativa)
+bash demo.sh /tmp/teste 50
+
+# Ou executar os monitores individualmente em segundo plano / terminais separados:
+# Polling (--interval em ms):
+python3 monitor_polling.py --path /tmp/teste --log /tmp/poll.csv --interval 50
+
+# inotify:
+python3 monitor_inotify.py --path /tmp/teste --log /tmp/ino.csv
+```
+
 ### Parte C: a ponte
 
 Repetir a Parte B dentro do container com o diretório monitorado em:
