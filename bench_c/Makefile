@@ -1,6 +1,7 @@
 # Makefile dos micro-benchmarks (P2). Mesmas flags em TODOS os ambientes.
 CC     = gcc
-CFLAGS = -O2 -Wall -Wextra -std=gnu11 -D_GNU_SOURCE
+# EXTRA permite acrescentar flags sem editar o arquivo, ex.: make EXTRA=-static
+CFLAGS = -O2 -Wall -Wextra -std=gnu11 -D_GNU_SOURCE $(EXTRA)
 BINS   = bench_syscall bench_fork bench_pipe bench_disk bench_alloc
 
 all: $(BINS)

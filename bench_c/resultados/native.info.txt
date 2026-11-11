@@ -1,0 +1,10 @@
+env: native
+data: 2026-11-11T18:46:05Z
+runs: 10   cpu_fixada: 2
+kernel: Linux rodrigoleptop 7.3.0-4-cachyos #1 SMP PREEMPT_DYNAMIC Fri, 23 Oct 2026 15:03:58 +0000 x86_64 GNU/Linux
+cpu: AMD Ryzen 7 5825U with Radeon Graphics
+nucleos_visiveis: 16
+thp: [always] madvise never
+gcc: gcc (GCC) 16.2.1 20260810
+disk_dir: /home/rodrigo/bench_data
+filesystem_do_disk_dir: /dev/nvme0n1p2 btrfs    499580928 99223188  398936284  20% /home

@@ -8,6 +8,9 @@
  *   - leitura: read() em blocos de 1 MiB depois de posix_fadvise(DONTNEED),
  *     que PEDE ao kernel para descartar o page cache. Não é garantia de cache frio.
  *
+ * Os dados escritos são pseudoaleatórios (xorshift64), de propósito: com um padrão constante,
+ * filesystems com compressão ou deduplicação (ex.: btrfs com zstd) inflariam o throughput.
+ *
  * CUIDADO: /tmp pode ser tmpfs (RAM). O programa avisa em stderr o tipo de
  * filesystem do diretório; para medir disco de verdade use --dir em um disco real.
  */
@@ -44,7 +47,12 @@ int main(int argc, char **argv) {
 
     char *buf = malloc(BLOCK);
     if (!buf) { perror("malloc"); return 1; }
-    memset(buf, 0xA5, BLOCK);
+    uint64_t x = 88172645463325252ull;           /* xorshift64: dados não comprimíveis */
+    uint64_t *w = (uint64_t *)buf;
+    for (size_t i = 0; i < BLOCK / sizeof(uint64_t); i++) {
+        x ^= x << 13; x ^= x >> 7; x ^= x << 17;
+        w[i] = x;
+    }
 
     volatile long sink = 0;
     print_header();

@@ -6,7 +6,8 @@
  *   mmap_touch_4MiB  : mmap + escrever 1 byte por página + munmap (inclui page faults),
  *                      reportado em ns por página
  *
- * --n = iterações do malloc; os testes de mmap usam n/50 iterações (são bem mais caros).
+ * --n = iterações base: o malloc roda n*25 (é barato, precisa de um loop longo para sair do
+ *        ruído) e os testes de mmap rodam n/50 (são bem mais caros).
  * O ponteiro é volatile e há escrita nele para o compilador não remover o par malloc/free.
  */
 #include "common.h"
@@ -19,6 +20,7 @@ int main(int argc, char **argv) {
     config_t cfg;
     parse_args(argc, argv, &cfg, 200000);
 
+    long n_malloc = cfg.n * 25;
     long n_map = cfg.n / 50;
     if (n_map < 1) n_map = 1;
     long page = sysconf(_SC_PAGESIZE);
@@ -29,14 +31,14 @@ int main(int argc, char **argv) {
         uint64_t t0, t1;
 
         t0 = now_ns();
-        for (long i = 0; i < cfg.n; i++) {
+        for (long i = 0; i < n_malloc; i++) {
             void *volatile p = malloc(64);
             if (!p) { perror("malloc"); return 1; }
             *(volatile char *)p = 1;
             free(p);
         }
         t1 = now_ns();
-        emit("alloc_malloc_free_64B", cfg.env, run, "time_per_op", (double)(t1 - t0) / cfg.n, "ns/op");
+        emit("alloc_malloc_free_64B", cfg.env, run, "time_per_op", (double)(t1 - t0) / n_malloc, "ns/op");
 
         t0 = now_ns();
         for (long i = 0; i < n_map; i++) {
