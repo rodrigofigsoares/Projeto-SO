@@ -2,6 +2,40 @@
 
 **Disciplina:** Sistemas Operacionais (UFG) · **Entrega:** Seminário (A02) em 26/11 · **Stack:** C, Git, Docker, VSCode
 
+## Execução exploratória no Mac
+
+Com o Docker Desktop aberto, a coleta usada no checkpoint pode ser repetida com
+um único comando na raiz do repositório:
+
+```bash
+make run_docker_macos
+```
+
+Cada execução cria uma pasta datada em `analysis/runs/` contendo dados brutos,
+resumos, logs dos monitores e metadados. Apesar do nome `run_local`, no macOS os
+programas rodam na VM Linux do Docker Desktop, pois `inotify` e partes dos
+benchmarks não existem no kernel Darwin. Portanto, os dados são exploratórios e
+não representam uma comparação entre macOS nativo e container.
+
+## Comparação oficial em Linux
+
+Na máquina Linux que será usada para a medição final, o caminho mais simples é:
+
+```bash
+make run_linux_comparison
+```
+
+Esse alvo executa primeiro os programas diretamente no host e depois repete a
+coleta em Docker na mesma máquina. Também existem os alvos separados
+`make run_native_linux` e `make run_docker_linux`. As dependências do host são
+`gcc`, `make`, `python3`, o módulo `venv`, Docker e acesso à internet na primeira
+execução para obter as dependências fixadas.
+
+O CSV comparativo informa a razão `Docker / nativo` e a diferença relativa em
+porcentagem. Para métricas de tempo, valor positivo indica que o Docker foi mais
+lento; para throughput, valor positivo indica que o Docker foi mais rápido. A
+interpretação deve considerar o desvio padrão e o IC 95%, não apenas a média.
+
 ## 1. Ideia central
 
 O SO oferece abstrações (containers, notificações de arquivo) e elas têm custo. Quanto custa, onde, e quando vale a pena? Os dois experimentos são dois lados da mesma pergunta.
