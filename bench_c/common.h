@@ -9,6 +9,11 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+/* Necessário para sched_setaffinity/CPU_SET e posix_fadvise. Precisa vir antes de qualquer #include de sistema. */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

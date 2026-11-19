@@ -1,3 +1,9 @@
 .DS_Store
 docs/relatorio/~$checkpoint-1.pptx
 analysis/runs/
+bench_c/bench_syscall
+bench_c/bench_fork
+bench_c/bench_pipe
+bench_c/bench_disk
+bench_c/bench_alloc
+bench_c/bench_data/
