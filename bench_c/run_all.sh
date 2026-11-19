@@ -4,7 +4,9 @@
 # Uso:   ./run_all.sh [ENV] [RUNS] [DIR_DISCO]
 #   ENV        rótulo do ambiente (padrão: native). Ex.: native, docker-overlay, docker-bind
 #   RUNS       rodadas válidas por benchmark, além da rodada 0 de aquecimento (padrão: 10)
-#   DIR_DISCO  onde o bench_disk cria o arquivo temporário (padrão: /tmp)
+#   DIR_DISCO  onde o bench_disk cria o arquivo temporário (padrão: bench_data/ dentro desta pasta).
+#              Se a pasta não existir, o script a cria e a remove ao final (só se estiver vazia).
+#              ATENÇÃO: precisa estar em disco real; em tmpfs (RAM) o teste de disco não vale.
 #
 # Variáveis opcionais:
 #   CPU=2      fixa tudo na CPU 2 usando taskset
@@ -15,10 +17,24 @@ set -euo pipefail
 
 ENV_NAME="${1:-native}"
 RUNS="${2:-10}"
-DISK_DIR="${3:-/tmp}"
 
 cd "$(dirname "$0")"
+DISK_DIR="${3:-$PWD/bench_data}"
 mkdir -p resultados
+
+# Cria a pasta do teste de disco se ainda não existir e a remove ao sair (rmdir só apaga se vazia,
+# então uma pasta que já existia antes, ou que tenha conteúdo, nunca é apagada).
+CRIADO_DISK_DIR=0
+if [ ! -d "${DISK_DIR}" ]; then
+    mkdir -p "${DISK_DIR}"
+    CRIADO_DISK_DIR=1
+fi
+limpar() {
+    if [ "${CRIADO_DISK_DIR}" = 1 ]; then
+        rmdir "${DISK_DIR}" 2>/dev/null || true
+    fi
+}
+trap limpar EXIT
 OUT="${OUT:-resultados/${ENV_NAME}.csv}"
 INFO="resultados/${ENV_NAME}.info.txt"
 
