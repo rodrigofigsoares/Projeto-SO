@@ -1,0 +1,11 @@
+collected_at=2026-11-23T20:03:35-0300
+git_commit=0b45db03c3c31ef82c2cde46f0544eb5a7793640
+execution=docker-desktop-macos
+host_kernel=Darwin 24.6.0
+host_arch=arm64
+docker_engine=27.4.0
+benchmark_env=docker-desktop-linux
+valid_runs=10
+poll_interval_ms=50
+gcc_image=gcc@sha256:5e927c284bf55a7dc796262e311a0703344f62f41f5621eb56843111b1d37e15
+python_image=python@sha256:efd0600c261faa9939c6b248af12908f96ac5f15463657a92302b058064a1aba

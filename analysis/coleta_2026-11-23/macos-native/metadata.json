@@ -1,0 +1,11 @@
+{
+  "system": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+  "python": "3.13.1 (main, Dec  3 2024, 17:59:52) [Clang 15.0.0 (clang-1500.1.0.2.5)]",
+  "execution": "macos-native",
+  "interval_ms": 50,
+  "valid_runs": 10,
+  "warmup": 0,
+  "load": "demo: 1 arquivo lento + 20 ef\u00eameros; gera\u00e7\u00e3o Python",
+  "startup": "espera fixa de 1 s; sem handshake",
+  "note": "demo Docker gera carga via shell; n\u00e3o comparar tempo entre ambientes"
+}

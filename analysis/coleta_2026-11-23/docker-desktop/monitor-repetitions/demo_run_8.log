@@ -1,0 +1,14 @@
+>> Cenário A: mudanças lentas (ambos devem ver tudo)
+>> Cenário B: arquivos criados e apagados em sequência (polling perde)
+
+=== POLLING (intervalo 50ms): eventos por tipo ===
+  CREATE    2
+  DELETE    2
+  MODIFY    1
+=== INOTIFY: eventos por tipo ===
+  CREATE    21
+  DELETE    21
+  MODIFY    22
+
+Logs completos: /tmp/poll.csv e /tmp/ino.csv
+Veja com: cat /tmp/poll.csv   |   cat /tmp/ino.csv

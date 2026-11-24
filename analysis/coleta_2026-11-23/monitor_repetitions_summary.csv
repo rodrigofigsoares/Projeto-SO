@@ -1,0 +1,13 @@
+environment,monitor,event_type,n,mean,stddev,ci95_low,ci95_high,min,max
+macos-native,polling,create,10,1.1,0.31622776601683794,0.8738000000000001,1.3262,1,2
+macos-native,polling,modify,10,1,0.0,1.0,1.0,1,1
+macos-native,polling,delete,10,1.1,0.31622776601683794,0.8738000000000001,1.3262,1,2
+macos-native,polling,overflow,10,0,0.0,0.0,0.0,0,0
+docker-desktop,polling,create,10,1.2,0.4216370213557839,0.8984,1.5015999999999998,1,2
+docker-desktop,polling,modify,10,1,0.0,1.0,1.0,1,1
+docker-desktop,polling,delete,10,1.2,0.4216370213557839,0.8984,1.5015999999999998,1,2
+docker-desktop,polling,overflow,10,0,0.0,0.0,0.0,0,0
+docker-desktop,inotify,create,10,21,0.0,21.0,21.0,21,21
+docker-desktop,inotify,modify,10,22,0.0,22.0,22.0,22,22
+docker-desktop,inotify,delete,10,21,0.0,21.0,21.0,21,21
+docker-desktop,inotify,overflow,10,0,0.0,0.0,0.0,0,0

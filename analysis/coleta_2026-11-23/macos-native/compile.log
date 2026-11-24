@@ -1,0 +1,32 @@
+In file included from bench_c/bench_syscall.c:7:
+bench_c/common.h:67:5: error: use of undeclared identifier 'cpu_set_t'
+   67 |     cpu_set_t set;
+      |     ^
+bench_c/common.h:68:5: error: call to undeclared function 'CPU_ZERO'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   68 |     CPU_ZERO(&set);
+      |     ^
+bench_c/common.h:68:15: error: use of undeclared identifier 'set'
+   68 |     CPU_ZERO(&set);
+      |               ^
+bench_c/common.h:69:5: error: call to undeclared function 'CPU_SET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   69 |     CPU_SET(cpu, &set);
+      |     ^
+bench_c/common.h:69:19: error: use of undeclared identifier 'set'
+   69 |     CPU_SET(cpu, &set);
+      |                   ^
+bench_c/common.h:70:9: error: call to undeclared function 'sched_setaffinity'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   70 |     if (sched_setaffinity(0, sizeof(set), &set) != 0)
+      |         ^
+bench_c/common.h:70:37: error: use of undeclared identifier 'set'
+   70 |     if (sched_setaffinity(0, sizeof(set), &set) != 0)
+      |                                     ^
+bench_c/common.h:70:44: error: use of undeclared identifier 'set'
+   70 |     if (sched_setaffinity(0, sizeof(set), &set) != 0)
+      |                                            ^
+bench_c/bench_syscall.c:20:21: warning: 'syscall' is deprecated: first deprecated in macOS 10.12 - syscall(2) is unsupported; please switch to a supported interface. For SYS_kdebug_trace use kdebug_signpost(). [-Wdeprecated-declarations]
+   20 |             sink += syscall(SYS_getpid);
+      |                     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h:744:6: note: 'syscall' has been explicitly marked deprecated here
+  744 | int      syscall(int, ...);
+      |          ^
+1 warning and 8 errors generated.

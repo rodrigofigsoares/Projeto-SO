@@ -1,0 +1,7 @@
+monitor,event_type,count
+polling,create,1
+polling,delete,1
+polling,modify,1
+inotify,create,21
+inotify,delete,21
+inotify,modify,22

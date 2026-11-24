@@ -1,0 +1,9 @@
+benchmark,metric,n,mean,stddev,ci95_low,ci95_high,unit
+alloc_malloc_free_64B,time_per_op,10,9.945,0.614,9.506,10.385,ns/op
+alloc_mmap_munmap_4MiB,time_per_op,10,5406.888,21.646,5391.405,5422.372,ns/op
+alloc_mmap_touch_4MiB,time_per_page,10,223.241,4.396,220.097,226.385,ns/page
+disk_seq,read_throughput,10,1114.921,6.433,1110.319,1119.523,MiB/s
+disk_seq,write_throughput,10,1304.928,175.744,1179.217,1430.639,MiB/s
+fork_wait,time_per_op,10,141112.979,2280.167,139481.959,142743.998,ns/op
+pipe_pingpong,time_per_roundtrip,10,10475.627,38.783,10447.885,10503.369,ns/roundtrip
+syscall_getpid,time_per_op,10,649.977,3.070,647.781,652.173,ns/op
