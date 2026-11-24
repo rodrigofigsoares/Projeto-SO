@@ -129,7 +129,7 @@ benchmarks_docker:
 		-v "$(CURDIR)/bench_c:/src:ro" \
 		-v "$(RESULT_ABS):/out" \
 		"$(GCC_IMAGE)" bash -lc 'set -eu; \
-		cp -r /src /work; cd /work; make >/dev/null; \
+		cp -r /src /work; cd /work; make clean all >/dev/null; \
 		{ \
 		  ./bench_syscall --env "$(BENCH_ENV)" --runs "$(RUNS)" --n 1000000; \
 		  ./bench_fork --env "$(BENCH_ENV)" --runs "$(RUNS)" --n 2000 | tail -n +2; \
