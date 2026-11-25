@@ -1,0 +1,10 @@
+env: docker-bind
+data: 2026-11-19T12:27:36Z
+runs: 10   cpu_fixada: nao
+kernel: Linux f17bfe0971c1 7.3.3-1-cachyos #1 SMP PREEMPT_DYNAMIC Sat, 07 Nov 2026 13:54:44 +0000 x86_64 GNU/Linux
+cpu: AMD Ryzen 7 5825U with Radeon Graphics
+nucleos_visiveis: 1
+thp: [always] madvise never
+gcc: 
+disk_dir: /data
+filesystem_do_disk_dir: /dev/nvme0n1p2 btrfs 499580928 95317092 402006140  20% /data

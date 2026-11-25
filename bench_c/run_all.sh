@@ -60,6 +60,10 @@ fi
     echo "gcc: $(gcc --version 2>/dev/null | head -1 || true)"
     echo "disk_dir: ${DISK_DIR}"
     echo "filesystem_do_disk_dir: $(df -T "${DISK_DIR}" 2>/dev/null | tail -1 || echo indisponivel)"
+    echo "sha256_binarios (16 primeiros caracteres; devem ser iguais no host e no container):"
+    for b in bench_syscall bench_fork bench_pipe bench_disk bench_alloc; do
+        echo "  ${b} $(sha256sum "./${b}" 2>/dev/null | cut -c1-16)"
+    done
 } > "${INFO}"
 
 # ---- execução ----

@@ -1,0 +1,10 @@
+inicio: 2026-11-25T12:30:25Z  blocos=8 rodadas=10 cpu=2
+governor=performance perfil=performance
+b1: N D C S  2026-11-25T12:30:25Z
+b2: D S N C  2026-11-25T12:32:08Z
+b3: S C D N  2026-11-25T12:33:49Z
+b4: C N S D  2026-11-25T12:35:33Z
+b5: N D C S  2026-11-25T12:37:18Z
+b6: D S N C  2026-11-25T12:39:02Z
+b7: S C D N  2026-11-25T12:40:46Z
+b8: C N S D  2026-11-25T12:42:29Z

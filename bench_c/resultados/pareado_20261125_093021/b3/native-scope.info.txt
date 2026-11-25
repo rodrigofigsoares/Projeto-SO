@@ -1,0 +1,16 @@
+env: native-scope
+data: 2026-11-25T12:34:15Z
+runs: 10   cpu_fixada: nao
+kernel: Linux rodrigoleptop 7.3.3-1-cachyos #1 SMP PREEMPT_DYNAMIC Sat, 07 Nov 2026 13:54:44 +0000 x86_64 GNU/Linux
+cpu: AMD Ryzen 7 5825U with Radeon Graphics
+nucleos_visiveis: 1
+thp: [always] madvise never
+gcc: gcc (GCC) 16.2.1 20260810
+disk_dir: /home/rodrigo/Projetos/Faculdade/Coding/Projeto-SO/bench_c/bench_data
+filesystem_do_disk_dir: /dev/nvme0n1p2 btrfs    499580928 97997528  399472360  20% /home
+sha256_binarios (16 primeiros caracteres; devem ser iguais no host e no container):
+  bench_syscall 8bb24aad31418f95
+  bench_fork fd888e70c8b88adc
+  bench_pipe d5d3eb251fb0f631
+  bench_disk 074676a8b295ce82
+  bench_alloc 128e9c288b590642
