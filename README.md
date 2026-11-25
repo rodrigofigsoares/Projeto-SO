@@ -8,7 +8,7 @@
 
 - 202003564 — GABRIEL FREITAS DOS REIS
 - 202401787 — HENRIQUE SIQUEIRA DE MAGALHAES
-- TODO: preencher nome completo e matrícula dos outros três integrantes.
+- 202401795 - JÚLIA MANCINE OLIVEIRA E CARVALHO
 
 Disciplina: INF0336 — Sistemas Operacionais, UFG. Professor: Aldo Díaz. Apresentação final: 26/11/2026.
 
