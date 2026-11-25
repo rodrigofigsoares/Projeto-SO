@@ -1,0 +1,9 @@
+benchmark,metric,unit,native_mean,docker_mean,docker_native_ratio,relative_difference_pct
+alloc_malloc_free_64B,time_per_op,ns/op,9.945,8.773,0.882152,-11.785
+alloc_mmap_munmap_4MiB,time_per_op,ns/op,5406.888,4985.014,0.921975,-7.803
+alloc_mmap_touch_4MiB,time_per_page,ns/page,223.241,220.282,0.986745,-1.325
+disk_seq,read_throughput,MiB/s,1114.921,1107.622,0.993453,-0.655
+disk_seq,write_throughput,MiB/s,1304.928,2556.633,1.959214,95.921
+fork_wait,time_per_op,ns/op,141112.979,143970.480,1.020250,2.025
+pipe_pingpong,time_per_roundtrip,ns/roundtrip,10475.627,10177.210,0.971513,-2.849
+syscall_getpid,time_per_op,ns/op,649.977,901.231,1.386558,38.656

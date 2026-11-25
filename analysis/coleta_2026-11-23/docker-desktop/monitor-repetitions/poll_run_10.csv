@@ -1,0 +1,4 @@
+ts_detect_ns,event_type,path
+195782730005,CREATE,/tmp/projeto-so-repeated-demo/lento.txt
+196275165464,MODIFY,/tmp/projeto-so-repeated-demo/lento.txt
+196754407256,DELETE,/tmp/projeto-so-repeated-demo/lento.txt

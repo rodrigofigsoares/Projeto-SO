@@ -21,3 +21,25 @@ ainda não possui um log-oráculo. Os números publicados foram produzidos pela
 execução real dos programas no Mac do integrante e devem ser revisados pelo
 grupo antes da apresentação; nenhum resultado foi inventado ou preenchido
 manualmente.
+
+## Atualização para o seminário — 23 de novembro de 2026
+
+O Codex auxiliou a adaptar o README ao template do professor, preservando o
+checkpoint 1 como registro histórico, e a verificar as seis fontes já utilizadas.
+Executou os cinco benchmarks C no Docker Desktop, com uma rodada de aquecimento
+e dez válidas, além de dez rodadas válidas dos monitores Docker e do polling
+nativo no macOS. A tentativa C nativa e a recusa do alvo Linux foram documentadas;
+não foram apresentados resultados nativos Linux inexistentes nesta máquina.
+
+Foram resolvidos conflitos de merge em três arquivos dos benchmarks, mantendo
+os trechos `lowlevel`, e corrigida a automação para recompilar os executáveis no
+container. A IA auxiliou a escrever os scripts de repetição do polling e de
+consolidação dos resultados, as tabelas, o gráfico vetorial e as instruções de
+reprodução. Os CSVs Linux do integrante foram analisados separadamente da coleta
+ARM64 do Mac; diferenças de kernel e configuração de CPU foram explicitadas.
+
+A afirmação de overhead geral de 2% a 5% não foi adotada como conclusão: a análise
+usa os números dos CSVs, sem ajustá-los a essa expectativa. CPU, latência com
+oráculo e comparação controlada das montagens continuam identificadas como
+pendências. Cabe ao grupo revisar o texto, preencher integrantes e slides,
+validar a interpretação e explicar os programas e as limitações na apresentação.

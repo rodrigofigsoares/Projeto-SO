@@ -1,0 +1,7 @@
+Linux 349f86767af7 6.10.14-linuxkit #1 SMP Fri Nov 29 17:22:03 UTC 2024 aarch64 GNU/Linux
+gcc (GCC) 14.3.0
+4096
+8
+MemTotal:        4013416 kB
+Filesystem     Type     1K-blocks     Used Available Use% Mounted on
+overlay        overlay 1055761844 21595380 980463040   3% /

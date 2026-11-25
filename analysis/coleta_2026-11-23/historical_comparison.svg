@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="510" viewBox="0 0 1080 510">
+<rect width="1080" height="510" fill="white"/>
+<g font-family="sans-serif" fill="#172b4d">
+<text x="24" y="35" font-size="22">Diferença das médias: Docker / nativo − 1 (%)</text>
+<text x="24" y="62" font-size="14">CSVs históricos de 11/11: kernels e configurações de CPU diferentes.</text>
+<text x="24" y="84" font-size="14">Comparação descritiva; não estima o overhead isolado do container.</text>
+<path d="M348.0 112 V435" stroke="#dce3ea"/>
+<text x="348.0" y="458" text-anchor="middle" font-size="13">-20%</text>
+<path d="M440.0 112 V435" stroke="#dce3ea"/>
+<text x="440.0" y="458" text-anchor="middle" font-size="13">0%</text>
+<path d="M532.0 112 V435" stroke="#dce3ea"/>
+<text x="532.0" y="458" text-anchor="middle" font-size="13">20%</text>
+<path d="M624.0 112 V435" stroke="#dce3ea"/>
+<text x="624.0" y="458" text-anchor="middle" font-size="13">40%</text>
+<path d="M716.0 112 V435" stroke="#dce3ea"/>
+<text x="716.0" y="458" text-anchor="middle" font-size="13">60%</text>
+<path d="M808.0 112 V435" stroke="#dce3ea"/>
+<text x="808.0" y="458" text-anchor="middle" font-size="13">80%</text>
+<path d="M900.0 112 V435" stroke="#dce3ea"/>
+<text x="900.0" y="458" text-anchor="middle" font-size="13">100%</text>
+<text x="24" y="143" font-size="15">malloc/free 64 B</text>
+<rect x="385.789" y="124" width="54.211" height="26" fill="#4276b8"/>
+<text x="448.0" y="143" font-size="14">-11.79%</text>
+<text x="24" y="182" font-size="15">mmap/munmap 4 MiB</text>
+<rect x="404.1062" y="163" width="35.8938" height="26" fill="#4276b8"/>
+<text x="448.0" y="182" font-size="14">-7.80%</text>
+<text x="24" y="221" font-size="15">mmap + toque nas páginas</text>
+<rect x="433.905" y="202" width="6.095" height="26" fill="#4276b8"/>
+<text x="448.0" y="221" font-size="14">-1.32%</text>
+<text x="24" y="260" font-size="15">Disco: read</text>
+<rect x="436.987" y="241" width="3.013" height="26" fill="#4276b8"/>
+<text x="448.0" y="260" font-size="14">-0.66%</text>
+<text x="24" y="299" font-size="15">Disco: write</text>
+<rect x="440.0" y="280" width="441.2366" height="26" fill="#4276b8"/>
+<text x="889.2366" y="299" font-size="14">+95.92%</text>
+<text x="24" y="338" font-size="15">fork + wait</text>
+<rect x="440.0" y="319" width="9.315" height="26" fill="#4276b8"/>
+<text x="457.315" y="338" font-size="14">+2.02%</text>
+<text x="24" y="377" font-size="15">pipe ida e volta</text>
+<rect x="426.8946" y="358" width="13.1054" height="26" fill="#4276b8"/>
+<text x="448.0" y="377" font-size="14">-2.85%</text>
+<text x="24" y="416" font-size="15">getpid</text>
+<rect x="440.0" y="397" width="177.81759999999997" height="26" fill="#4276b8"/>
+<text x="625.8176" y="416" font-size="14">+38.66%</text>
+<text x="24" y="493" font-size="13">Tempo: positivo = mais lento. Throughput de disco: positivo = mais rápido. n = 10 por condição; run=0 excluído.</text>
+</g></svg>

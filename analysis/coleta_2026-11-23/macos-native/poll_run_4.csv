@@ -1,0 +1,4 @@
+ts_detect_ns,event_type,path
+1114171191980750,CREATE,/tmp/projeto-so-poll-65v4c1c5/lento.txt
+1114171723859041,MODIFY,/tmp/projeto-so-poll-65v4c1c5/lento.txt
+1114172208742125,DELETE,/tmp/projeto-so-poll-65v4c1c5/lento.txt
