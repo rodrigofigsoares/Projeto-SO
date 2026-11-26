@@ -1,0 +1,6 @@
+inicio: 2026-11-26T12:07:12Z  blocos=4 rodadas=10 cpu=2
+governor=powersave perfil=power-saver
+b1: N D C S  2026-11-26T12:07:12Z
+b2: D S N C  2026-11-26T12:12:47Z
+b3: S C D N  2026-11-26T12:15:30Z
+b4: C N S D  2026-11-26T12:18:12Z

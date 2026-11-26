@@ -1,0 +1,16 @@
+env: docker-noseccomp
+data: 2026-11-26T12:13:29Z
+runs: 10   cpu_fixada: nao
+kernel: Linux 8c253653e8d4 7.3.6-1-cachyos #1 SMP PREEMPT_DYNAMIC Wed, 25 Nov 2026 11:06:17 +0000 x86_64 GNU/Linux
+cpu: AMD Ryzen 7 5825U with Radeon Graphics
+nucleos_visiveis: 1
+thp: [always] madvise never
+gcc: 
+disk_dir: /data
+filesystem_do_disk_dir: /dev/nvme0n1p2 btrfs 499580928 97903236 399814348  20% /data
+sha256_binarios (16 primeiros caracteres; devem ser iguais no host e no container):
+  bench_syscall 5748745de437997d
+  bench_fork 3b15921845aaa67f
+  bench_pipe 44fd3e3cea68cebb
+  bench_disk c6bc1bf5c1dcfa86
+  bench_alloc 41a5cb6ea5041d40
