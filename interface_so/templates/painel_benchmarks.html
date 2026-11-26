@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel Nativo vs Docker</title>
+<style>
+:root{
+  --bg:#f7f7f5;--card:#fff;--ink:#1c1c1a;--mute:#6b6b66;--line:#e3e3de;
+  --native:#2f6fb0;--docker:#d9782d;--good:#2a8a57;--bad:#c0392b;--neutral:#9a9a93;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141413;--card:#1e1e1c;--ink:#ecece8;--mute:#9a9a93;--line:#34342f;
+  --native:#6ba6e0;--docker:#f0a060;--good:#52c08a;--bad:#ee7b6e;--neutral:#77776f;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:24px 16px 56px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:17px;margin:32px 0 10px}
+.sub{color:var(--mute);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+
+/* Menu de controle interativo */
+.menu-bar{
+  display:flex;flex-wrap:wrap;gap:12px;align-items:end;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;margin-bottom:20px;
+}
+.menu-group{display:flex;flex-direction:column;gap:4px;min-width:165px}
+.menu-group label{font-size:12px;color:var(--mute);font-weight:600}
+select,.btn{
+  background:var(--bg);color:var(--ink);border:1px solid var(--line);
+  border-radius:8px;padding:7px 10px;font:inherit;font-size:13.5px;cursor:pointer;
+}
+.btn-primary{background:var(--native);color:#fff;border-color:var(--native);font-weight:500}
+.btn:hover{opacity:.9}
+.menu-actions{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+
+.grid{display:grid;gap:12px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.kpi .lbl{color:var(--mute);font-size:13px}
+.kpi .val{font-size:28px;font-weight:650;margin:2px 0}
+.kpi .det{font-size:13px;color:var(--mute)}
+.good{color:var(--good)}.bad{color:var(--bad)}.neu{color:var(--mute)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mute);margin:8px 0 0}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mute);font-weight:600;font-size:12px}
+.wrap{overflow-x:auto}
+.tag{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12px;border:1px solid var(--line)}
+.tag.sig{border-color:currentColor}
+.detail{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.detail h3{font-size:14px;margin:0 0 2px}
+.detail .m{color:var(--mute);font-size:12.5px;margin-bottom:6px}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--ink);font:12px system-ui,sans-serif}
+svg .mute{fill:var(--mute)}
+.warn{border-left:4px solid var(--docker)}
+.warn ul{margin:6px 0 0;padding-left:20px}
+.warn li{margin:4px 0}
+.env{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.env dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:4px 10px;font-size:13px}
+.env dt{color:var(--mute)}.env dd{margin:0;word-break:break-word}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.toggle button{background:none;border:0;color:var(--ink);padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.toggle button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+footer{color:var(--mute);font-size:12.5px;margin-top:28px}
+</style>
+</head>
+<body>
+<main>
+<h1>Nativo vs. Docker: custo da abstração</h1>
+<p class="sub">Micro-benchmarks em C (Parte A) · 10 rodadas válidas por métrica (rodada 0 descartada) · Docker com <b>bind mount</b> · Mesma máquina Linux</p>
+
+<!-- MENU INTERATIVO CONTROLADO PELO DJANGO -->
+<nav class="menu-bar" aria-label="Opções do painel">
+  <div class="menu-group">
+    <label for="f-category">Subsistema</label>
+    <select id="f-category">
+      <option value="all">Todos os subsistemas</option>
+      <option value="cpu">CPU & Syscalls</option>
+      <option value="memoria">Memória (malloc/mmap)</option>
+      <option value="disco">Disco (I/O sequencial)</option>
+    </select>
+  </div>
+
+  <div class="menu-group">
+    <label for="f-sig">Significância (IC 95%)</label>
+    <select id="f-sig">
+      <option value="all">Todas as métricas</option>
+      <option value="sig">Apenas significativas</option>
+      <option value="nonsig">Sem diferença clara</option>
+    </select>
+  </div>
+
+  <div class="menu-group">
+    <label for="f-sort">Ordenar por</label>
+    <select id="f-sort">
+      <option value="default">Ordem padrão</option>
+      <option value="diff_desc">Maior diferença (%)</option>
+      <option value="t_desc">Maior estatística |t|</option>
+    </select>
+  </div>
+
+  <div class="menu-actions">
+    <button type="button" class="btn btn-primary" id="btn-sim">Simular nova coleta</button>
+    <button type="button" class="btn" id="btn-reset">Restaurar originais</button>
+  </div>
+</nav>
+
+<div class="grid kpis" id="kpis"></div>
+
+<h2>Diferença relativa por métrica</h2>
+<div class="card">
+  <div class="toggle" role="group" aria-label="Modo">
+    <button id="m-better" aria-pressed="true">Melhor / pior</button>
+    <button id="m-raw" aria-pressed="false">Valor bruto (Docker ÷ nativo − 1)</button>
+  </div>
+  <svg id="bars" role="img" aria-label="Diferença relativa por métrica"></svg>
+  <div class="legend" id="legend"></div>
+</div>
+
+<h2>Tabela completa</h2>
+<div class="card wrap"><table id="tbl"></table></div>
+
+<h2>Rodadas individuais</h2>
+<p class="sub" style="margin-bottom:10px">Cada ponto é uma rodada. A barra é o IC 95% (t de Student, 9 g.l.). Cada gráfico tem escala própria.</p>
+<div class="grid detail" id="detail"></div>
+
+<h2>Cuidados ao interpretar</h2>
+<div class="card warn" id="warn"></div>
+
+<h2>Ambientes das duas coletas</h2>
+<div class="grid env" id="env"></div>
+
+<footer>Servido localmente via <code>Django</code> a partir de <code>native.csv</code> e <code>docker-bind.csv</code>. Significativo = ICs 95% não se sobrepõem (critério conservador; o teste t de Welch é mostrado na tabela).</footer>
+</main>
+
+<script>
+const LABEL = {
+  "syscall_getpid|time_per_op":["Syscall (getpid)","ns/op",true],
+  "fork_wait|time_per_op":["fork + wait","ns/op",true],
+  "pipe_pingpong|time_per_roundtrip":["Pipe ping-pong","ns/ida e volta",true],
+  "alloc_malloc_free_64B|time_per_op":["malloc/free 64 B","ns/op",true],
+  "alloc_mmap_munmap_4MiB|time_per_op":["mmap/munmap 4 MiB","ns/op",true],
+  "alloc_mmap_touch_4MiB|time_per_page":["mmap + tocar páginas","ns/página",true],
+  "disk_seq|read_throughput":["Disco: leitura seq.","MiB/s",false],
+  "disk_seq|write_throughput":["Disco: escrita seq.","MiB/s",false],
+};
+
+let rows = [];
+let mode = "better";
+
+const fmt = (x, d=1) => {
+  const a = Math.abs(x);
+  if (a >= 1000) return x.toLocaleString("pt-BR", {maximumFractionDigits:0});
+  return x.toLocaleString("pt-BR", {minimumFractionDigits:d, maximumFractionDigits:d});
+};
+const pct = x => (x > 0 ? "+" : "") + x.toLocaleString("pt-BR", {minimumFractionDigits:1, maximumFractionDigits:1}) + "%";
+const cls = r => !r.sig ? "neu" : (r.worse ? "bad" : "good");
+const verdict = r => !r.sig ? "sem diferença clara" : (r.worse ? "Docker pior" : "Docker melhor");
+
+// Busca os dados do backend Django conforme as opções do menu
+async function atualizarPainel(action = "") {
+  const params = new URLSearchParams({
+    category: document.getElementById("f-category").value,
+    sig: document.getElementById("f-sig").value,
+    sort: document.getElementById("f-sort").value,
+  });
+  if (action) params.set("action", action);
+
+  const response = await fetch(`/api/benchmarks/?${params.toString()}`);
+  const payload = await response.json();
+
+  rows = payload.data.map(o => {
+    const k = o.benchmark + "|" + o.metric;
+    const [name, unit, lowerBetter] = LABEL[k];
+    const worse = lowerBetter ? o.diff > 0 : o.diff < 0;
+    return {...o, name, unit, lowerBetter, worse, sig: !o.overlap};
+  });
+
+  renderKPIs();
+  drawBars();
+  renderTable();
+  renderDetails();
+  renderWarn(payload.all_data || payload.data);
+  if (payload.env) renderEnv(payload.env);
+}
+
+// KPIs
+function renderKPIs() {
+  if (!rows.length) {
+    document.getElementById("kpis").innerHTML = `<div class="card kpi"><div class="lbl">Filtro vazio</div><div class="val">0 métricas</div><div class="det">Nenhuma métrica corresponde às opções selecionadas.</div></div>`;
+    return;
+  }
+  const worst = [...rows].filter(r => r.sig && r.worse).sort((a,b) => Math.abs(b.diff) - Math.abs(a.diff))[0];
+  const quiet = rows.filter(r => !r.sig);
+  const w = rows.find(r => r.metric === "write_throughput");
+
+  document.getElementById("kpis").innerHTML = [
+    `<div class="card kpi"><div class="lbl">Métricas sem diferença clara</div><div class="val">${quiet.length} de ${rows.length}</div><div class="det">ICs 95% se sobrepõem ${quiet.length ? `(${quiet.map(r=>r.name).join(", ")})` : ""}</div></div>`,
+    worst ? `<div class="card kpi"><div class="lbl">Maior custo do Docker</div><div class="val bad">${pct(worst.diff)}</div><div class="det">${worst.name}: ${fmt(worst.native.mean)} → ${fmt(worst.docker.mean)} ${worst.unit}</div></div>` : "",
+    w ? `<div class="card kpi"><div class="lbl">Resultado inesperado</div><div class="val">${pct(w.diff)}</div><div class="det">Escrita sequencial no Docker foi mais rápida. Ver cuidados antes de concluir.</div></div>` : "",
+    `<div class="card kpi"><div class="lbl">Diferenças pequenas mas estáveis</div><div class="val">${rows.filter(r => r.sig && Math.abs(r.diff) < 10).length}</div><div class="det">Significativas, abaixo de 10% (mmap/munmap, pipe)</div></div>`
+  ].join("");
+}
+
+// Barras
+function drawBars() {
+  const svg = document.getElementById("bars");
+  if (!rows.length) { svg.innerHTML = ""; return; }
+
+  const W = 1000, L = 210, R = 70, rowH = 34, top = 26, H = top + rows.length * rowH + 20;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const vals = rows.map(r => mode === "better" ? (r.lowerBetter ? -r.diff : r.diff) : r.diff);
+  const lim = Math.max(20, ...vals.map(Math.abs)) * 1.05;
+  const x = v => L + (v + lim) / (2 * lim) * (W - L - R);
+  let s = "";
+  [-lim, 0, lim].forEach(t => { s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top-8}" y2="${H-14}" stroke="var(--line)" ${t===0?'stroke-width="1.5"':'stroke-dasharray="3 4"'}/>`; });
+  s += `<text class="mute" x="${x(0)}" y="12" text-anchor="middle">0 = igual</text>`;
+  if (mode === "better") {
+    s += `<text class="mute" x="${x(-lim)}" y="12" text-anchor="start">← Docker pior</text><text class="mute" x="${x(lim)}" y="12" text-anchor="end">Docker melhor →</text>`;
+  } else {
+    s += `<text class="mute" x="${x(-lim)}" y="12" text-anchor="start">← valor menor no Docker</text><text class="mute" x="${x(lim)}" y="12" text-anchor="end">valor maior no Docker →</text>`;
+  }
+  rows.forEach((r, i) => {
+    const v = vals[i], y = top + i * rowH, c = !r.sig ? "var(--neutral)" : (r.worse ? "var(--bad)" : "var(--good)");
+    const x0 = x(0), x1 = x(v);
+    s += `<text x="${L-12}" y="${y+rowH/2+4}" text-anchor="end">${r.name}</text>`;
+    s += `<rect x="${Math.min(x0,x1)}" y="${y+7}" width="${Math.max(2,Math.abs(x1-x0))}" height="${rowH-14}" rx="3" fill="${c}" opacity="${r.sig?1:.45}"><title>${r.name}: ${pct(r.diff)} (${verdict(r)})</title></rect>`;
+    const lx = v >= 0 ? x1 + 6 : x1 - 6, anchor = v >= 0 ? "start" : "end";
+    s += `<text x="${lx}" y="${y+rowH/2+4}" text-anchor="${anchor}">${pct(r.diff)}</text>`;
+  });
+  svg.innerHTML = s;
+  document.getElementById("legend").innerHTML =
+    `<span><i style="background:var(--good)"></i>Docker melhor (significativo)</span><span><i style="background:var(--bad)"></i>Docker pior (significativo)</span><span><i style="background:var(--neutral);opacity:.45"></i>ICs se sobrepõem</span>`;
+}
+
+// Tabela
+function renderTable() {
+  document.getElementById("tbl").innerHTML =
+    `<thead><tr><th>Métrica</th><th>Unid.</th><th>Nativo (média ± dp)</th><th>Docker (média ± dp)</th><th>Razão D/N</th><th>Diferença</th><th>t (Welch)</th><th>Leitura</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td>${r.name}</td><td>${r.unit}</td><td>${fmt(r.native.mean,2)} ± ${fmt(r.native.sd,2)}</td><td>${fmt(r.docker.mean,2)} ± ${fmt(r.docker.sd,2)}</td><td>${r.ratio.toLocaleString("pt-BR",{minimumFractionDigits:3,maximumFractionDigits:3})}</td><td class="${cls(r)}"><b>${pct(r.diff)}</b></td><td>${r.t.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})}</td><td><span class="tag ${r.sig?"sig "+cls(r):""}">${verdict(r)}</span></td></tr>`).join("") + `</tbody>`;
+}
+
+// Detalhe por rodada
+function strip(r) {
+  const W = 420, H = 96, L = 10, R = 10;
+  const all = [...r.native.vals, ...r.docker.vals, r.native.lo, r.native.hi, r.docker.lo, r.docker.hi];
+  let mn = Math.min(...all), mx = Math.max(...all);
+  const pad = (mx - mn) * .08 || 1;
+  mn -= pad; mx += pad;
+  const x = v => L + (v - mn) / (mx - mn) * (W - L - R);
+  let s = "";
+  [["native","Nativo",28,"var(--native)"],["docker","Docker",64,"var(--docker)"]].forEach(([k,lab,y,c]) => {
+    const g = r[k];
+    s += `<text class="mute" x="${L}" y="${y-14}">${lab}</text>`;
+    s += `<line x1="${x(g.lo)}" x2="${x(g.hi)}" y1="${y}" y2="${y}" stroke="${c}" stroke-width="6" opacity=".25" stroke-linecap="round"/>`;
+    g.vals.forEach(v => { s += `<circle cx="${x(v)}" cy="${y}" r="4" fill="${c}" opacity=".85"><title>${lab}: ${fmt(v,2)} ${r.unit}</title></circle>`; });
+    s += `<line x1="${x(g.mean)}" x2="${x(g.mean)}" y1="${y-11}" y2="${y+11}" stroke="${c}" stroke-width="2.5"/>`;
+  });
+  s += `<text class="mute" x="${L}" y="${H-2}">${fmt(mn+pad,0)}</text><text class="mute" x="${W-R}" y="${H-2}" text-anchor="end">${fmt(mx-pad,0)} ${r.unit}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+}
+
+function renderDetails() {
+  document.getElementById("detail").innerHTML = rows.map(r =>
+    `<div class="card detail"><h3>${r.name} <span class="${cls(r)}">${pct(r.diff)}</span></h3><div class="m">CV: nativo ${fmt(r.native.cv)}% · Docker ${fmt(r.docker.cv)}%</div>${strip(r)}</div>`
+  ).join("");
+}
+
+// Cuidados
+function renderWarn(allData) {
+  const sys = allData.find(r => r.benchmark === "syscall_getpid");
+  const wr = allData.find(r => r.metric === "write_throughput");
+  if (!sys || !wr) return;
+
+  document.getElementById("warn").innerHTML = `<b>As coletas não são idênticas. Antes de atribuir as diferenças ao Docker:</b><ul>
+  <li><b>CPU:</b> o nativo rodou fixado na CPU 2 (<code>taskset</code>) e vê 16 núcleos; o Docker rodou sem fixar e vê 1 núcleo. Isso afeta principalmente o pipe (dois processos) e a variação das rodadas.</li>
+  <li><b>Syscall (${pct(sys.diff)}):</b> o Docker tem duas faixas de valores (~1000 ns nas 6 primeiras rodadas e ~700 ns nas últimas), CV de ${fmt(sys.docker.cv)}% contra ${fmt(sys.native.cv)}% no nativo. É compatível com o filtro seccomp padrão do Docker, mas a oscilação sugere também efeito de frequência/escalonamento. Vale repetir fixando a CPU.</li>
+  <li><b>Escrita em disco (${pct(wr.diff)}):</b> resultado contraintuitivo. O disco e o filesystem (btrfs, mesmo NVMe) são os mesmos, mas os diretórios diferem (<code>/home/rodrigo/bench_data</code> vs. bind em <code>/data</code>) e as opções de montagem/compressão podem diferir. Também é preciso confirmar que os dois binários foram compilados a partir da mesma versão do <code>bench_disk.c</code> (dados constantes vs. pseudoaleatórios mudam muito o resultado em btrfs com compressão). Além disso, uma rodada nativa (~809 MiB/s) é discrepante. Não use este número como "Docker é mais rápido" sem esclarecer isso.</li>
+  <li><b>Leitura:</b> <code>posix_fadvise(DONTNEED)</code> só <i>pede</i> descarte do cache; não garante leitura de disco frio.</li>
+  <li><b>Pipe:</b> mede comunicação + escalonamento, não é custo puro de troca de contexto.</li>
+  <li><b>Kernels diferentes:</b> o container reporta 7.3.3-1-cachyos e o host 7.3.0-4-cachyos (o container deveria compartilhar o kernel do host; vale conferir, p. ex. se foi Docker Desktop/VM).</li>
+  <li>Apenas 10 rodadas por métrica e um único host: tratar como evidência exploratória.</li></ul>`;
+}
+
+// Ambiente
+function renderEnv(ENV) {
+  const envHtml = k => {
+    const e = ENV[k];
+    return `<div class="card"><h3 style="margin:0 0 8px;font-size:14px">${k==="native"?"Nativo":"Docker (bind mount)"}</h3><dl>${Object.entries(e).map(([a,b])=>`<dt>${a}</dt><dd>${(b||"—").toString().replace(/</g,"&lt;")}</dd>`).join("")}</dl></div>`;
+  };
+  document.getElementById("env").innerHTML = envHtml("native") + envHtml("docker-bind");
+}
+
+// Eventos do menu
+document.getElementById("f-category").onchange = () => atualizarPainel();
+document.getElementById("f-sig").onchange = () => atualizarPainel();
+document.getElementById("f-sort").onchange = () => atualizarPainel();
+document.getElementById("btn-sim").onclick = () => atualizarPainel("simulate");
+document.getElementById("btn-reset").onclick = () => atualizarPainel("reset");
+
+// Toggle do gráfico
+document.getElementById("m-better").onclick = () => { mode = "better"; sync(); };
+document.getElementById("m-raw").onclick = () => { mode = "raw"; sync(); };
+function sync() {
+  document.getElementById("m-better").setAttribute("aria-pressed", mode === "better");
+  document.getElementById("m-raw").setAttribute("aria-pressed", mode === "raw");
+  drawBars();
+}
+
+// Inicialização
+atualizarPainel();
+</script>
+</body>
+</html>
