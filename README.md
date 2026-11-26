@@ -12,11 +12,6 @@
 
 Disciplina: INF0336 — Sistemas Operacionais, UFG. Professor: Aldo Díaz. Apresentação final: 26/11/2026.
 
-## Apresentações
-
-1. Primeiro checkpoint: TODO: inserir link dos slides. [Relatório da entrega 1](docs/relatorio/checkpoint-1.md).
-2. Apresentação final: TODO: inserir link dos slides.
-
 ## Resumo
 
 Containers e mecanismos de notificação de arquivos simplificam a execução e a observação de aplicações, mas seus custos dependem da carga e do ambiente. Este estudo investiga operações básicas do sistema operacional e compara polling com `inotify`. Utilizamos cinco micro-benchmarks em C, monitores Python e CSVs produzidos pelo grupo. Analisamos as coletas Linux existentes e executamos nova coleta no Docker Desktop, além de polling nativo no macOS, com aquecimento e dez rodadas válidas. As hipóteses originais preveem overhead próximo de zero em CPU e memória e diferenças em I/O e monitoramento. Nos CSVs Linux, a diferença de tempo foi de +2,03% para `fork + wait` e +38,66% para `getpid`, mas kernels e configurações de CPU diferem entre as condições. Na demonstração Docker, o `inotify` registrou 21 criações e 21 remoções por rodada, enquanto o polling de 50 ms registrou médias de 1,2 criações e 1,2 remoções. Os resultados demonstram diferenças entre operações e limitações do polling, mas ainda não estabelecem um overhead geral de 2% a 5% nem concluem a comparação controlada em Linux.
